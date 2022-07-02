@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Models\Post;
+use App\Models\Category;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Post\StoreRequest;
-use App\Models\Category;
-use App\Models\Post;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
@@ -74,8 +75,17 @@ class PostController extends Controller
         // dd($validator->fails()); // falló? true o false
         // dd($validator->errors()); 
 
-        Post::create($request->all());
-        dd($request->all());
+        // $data = $request->validated();
+
+        // $data['slug'] = Str::of($data['title'])->slug('-');
+        // $data['slug'] = Str::slug($data['title']);
+        // dd($data);
+
+        // Post::create($request->all());
+        // dd($request->all());
+
+        Post::create($request->validated());
+
     }
 
     /**
