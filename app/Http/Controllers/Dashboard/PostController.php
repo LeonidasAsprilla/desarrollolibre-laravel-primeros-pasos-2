@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Post\StoreRequest;
 use App\Models\Category;
 use App\Models\Post;
-use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
@@ -30,7 +31,7 @@ class PostController extends Controller
         // $categories = Category::get();
         // dd($categories[1]->title);
 
-        $categories = Category::pluck('id','title');
+        $categories = Category::pluck('id', 'title');
         // dd($categories);
 
         return view('dashboard.post.create', compact('categories'));
@@ -42,7 +43,7 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
         // dd($request);
         // dd(request());
@@ -52,11 +53,29 @@ class PostController extends Controller
         // echo $request->title; // también funciona
         // echo $request->input('slug');
         // dd($request->all());
-        
+
         // $data = array_merge($request->all(), ['image' => '']);
         // Post::create($data);
-        
+
+        // $validated = $request->validate([
+        //   "title" => "required|min:5|max:500",
+        //   "slug" => "required|min:5|max:500",
+        //   "content" => "required|min:7",
+        //   "category_id" => "required|integer",
+        //   "description" => "required|min:7|max:500",
+        //   "posted" => "required"
+        // ]);
+
+        // $validated = $request->validate(StoreRequest::myRules());
+        // dd($validated);
+
+        // $validator = Validator::make($request->all(), StoreRequest::myRules());
+        // dd($validator);
+        // dd($validator->fails()); // falló? true o false
+        // dd($validator->errors()); 
+
         Post::create($request->all());
+        dd($request->all());
     }
 
     /**

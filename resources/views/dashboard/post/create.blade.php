@@ -9,6 +9,8 @@
 <body>
   <h1>Crear Post</h1>
 
+  @include('dashboard.fragment._errors-form')
+
   <form action="{{ route('post.store') }}" method="POST">
     @csrf
 
