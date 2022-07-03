@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Post\PutRequest;
 use App\Http\Requests\Post\StoreRequest;
 use Illuminate\Support\Facades\Validator;
 
@@ -19,7 +20,15 @@ class PostController extends Controller
      */
     public function index()
     {
-        echo "Index";
+        // return route("post.create"); // devuelve la ruta general del nombre
+        // return redirect("post/create"); // redirige a la ruta indicada
+        // return redirect()->route("post.create"); // redirige a la ruta con nombre indicada
+        // return to_route("post.create"); // nuevo en lrvl9 redirige a la ruta con nombre indicada
+        
+
+        // $posts = Post::get();
+        $posts = Post::paginate(5);
+        return view('dashboard.post.index', compact('posts'));
     }
 
     /**
@@ -34,8 +43,9 @@ class PostController extends Controller
 
         $categories = Category::pluck('id', 'title');
         // dd($categories);
+        $post = new Post();
 
-        return view('dashboard.post.create', compact('categories'));
+        return view('dashboard.post.create', compact('categories', 'post'));
     }
 
     /**
@@ -85,7 +95,7 @@ class PostController extends Controller
         // dd($request->all());
 
         Post::create($request->validated());
-
+        return to_route("post.index");
     }
 
     /**
@@ -96,7 +106,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return view("dashboard.post.show", compact('post'));
     }
 
     /**
@@ -107,7 +117,9 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        $categories = Category::pluck('id', 'title');
+
+        return view('dashboard.post.edit', compact('categories', 'post'));
     }
 
     /**
@@ -117,9 +129,11 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(PutRequest $request, Post $post)
     {
-        //
+        // dd($request->validated());
+        $post->update($request->validated());
+        return to_route("post.index");
     }
 
     /**
@@ -130,6 +144,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        // echo "Destroy";
+        $post->delete();
+        return to_route("post.index");
     }
 }
