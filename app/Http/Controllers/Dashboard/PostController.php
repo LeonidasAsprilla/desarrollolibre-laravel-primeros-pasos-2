@@ -157,6 +157,6 @@ class PostController extends Controller
     {
         // echo "Destroy";
         $post->delete();
-        return to_route("post.index")->with('status', 'Registro eliminado!');;
+        return to_route("post.index")->with('status', 'Registro eliminado!');
     }
 }
